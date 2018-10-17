@@ -7,6 +7,10 @@ public class Resultado {
     private int tiempo_espera;
     private int tiempo_vuelta;
 
+    public Resultado() {
+        
+    }
+
     public int getProceso() {
         return proceso;
     }
@@ -39,8 +43,11 @@ public class Resultado {
         this.tiempo_vuelta = tiempo_vuelta;
     }
 
-    public Resultado() {
+    public Resultado(int proceso, int ncpu, int tiempo_espera, int tiempo_vuelta) {
+        this.proceso = proceso;
+        this.ncpu = ncpu;
+        this.tiempo_espera = tiempo_espera;
+        this.tiempo_vuelta = tiempo_vuelta;
     }
-    
     
 }

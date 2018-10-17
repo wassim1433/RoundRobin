@@ -3,6 +3,7 @@ package View;
 
 import Model.Resultado;
 import java.util.ArrayList;
+import javax.swing.table.DefaultTableModel;
 public class RoundRobinView extends javax.swing.JFrame {
 
     ArrayList<Integer> l_procesos = new ArrayList<>();
@@ -12,7 +13,6 @@ public class RoundRobinView extends javax.swing.JFrame {
 
     public RoundRobinView() {
         initComponents();
-       
     }
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -159,6 +159,18 @@ public class RoundRobinView extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void llenarTabla(ArrayList<Object> arr_resul)
+    {
+        String[] col = {"Procesos", "NCPU", "T. Espera", "T. Vuelta"};
+        DefaultTableModel tableModel = new DefaultTableModel(col, 0);
+        
+        this.tblResultados.setModel(tableModel);
+        
+        for (Object arr_resul1 : arr_resul) {
+            tableModel.addRow(col);
+        }
+    }
+    
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
         l_procesos.add(Integer.parseInt(this.txtProceso.getText()));
         tam_procesos = l_procesos.size();
@@ -248,7 +260,7 @@ public class RoundRobinView extends javax.swing.JFrame {
         }
     }
 
-    public void encontrarTiempoPromedio(ArrayList<Integer> proc, int tam_proc, ArrayList<Integer> ncpu,
+    static void encontrarTiempoPromedio(ArrayList<Integer> proc, int tam_proc, ArrayList<Integer> ncpu,
             int quantum) {
 
         int wt[] = new int[tam_proc], tat[] = new int[tam_proc];
@@ -259,18 +271,24 @@ public class RoundRobinView extends javax.swing.JFrame {
 
         // Calculate total waiting time and total turn 
         // around time 
-                
+             
+        Resultado r = new Resultado();
+        ArrayList<Object> arr_resultado = new ArrayList<>();
+        
         for (int i = 0; i < tam_proc; i++) {
             total_wt = total_wt + wt[i];
             total_tat = total_tat + tat[i];
             
-            //Resultado r = new Resultado((i+1), ncpu.get(i), wt[i], tat[i]);
+            r.setProceso(i+1);
+            r.setNcpu((i));
+            r.setTiempo_espera(wt[i]);
+            r.setTiempo_vuelta(tat[i]);
+            
+            arr_resultado.add(r);
         }
         
-        System.out.println("Average waiting time = "
-                + (float) total_wt / (float) tam_proc);
-        System.out.println("Average turn around time = "
-                + (float) total_tat / (float) tam_proc);
+        arr_resultado.add((float) total_wt / (float) tam_proc);
+        arr_resultado.add((float) total_tat / (float) tam_proc);
     }
 
     public static void main(String args[]) {
